@@ -3,11 +3,10 @@
 ///  Raaka versio 
 /// </summary>
 
+#region Defines 
 const int PAIKKOJEN_MAARA = 6;
 const int ESINEIDEN_MAARA = 2;
 const int ILMANSUUNTIEN_MAARA = 6;
-
-
 
 
 // Alkumääritykset
@@ -31,6 +30,9 @@ bool paikka4nappi = false;
 // Määritetään paikan 4 salanappi -> onko painettu
 bool paikka4nappipainettu = false;
 
+#endregion
+
+#region Main
 do
 {
     // Hae paikan kuvaus
@@ -57,12 +59,17 @@ do
 
     // Näytetään "komentotulkki" ja odotetaan käyttäjän komentoa
     Console.Write("> ");
-    string? komentoRivi = Console.ReadLine();
+    string komentoRivi = Console.ReadLine();
+    while (komentoRivi.Length == 0)
+    {
+        Console.Write("> ");
+        komentoRivi = Console.ReadLine();
+    }
     komentoRivi = komentoRivi.ToUpper(); // Kaikki teksti isoilla kirjaimilla
      
     // Jaetaan käyttäjän komento yksi sanaisiin ja kaksi sanaisiin (erotusmerkkinä välilyönti)
     string[] komennot = komentoRivi.Split(' ');
-    if (komennot.Length == 1)
+    if (komennot.Length == 1 && komennot[0].Length > 2)
     {
         string ekaKomento = komennot[0].Substring(0, 3);
         // Exit komento
@@ -96,11 +103,11 @@ do
             }
         }
 
-        else ;
+        else Console.WriteLine("MITÄ?"); 
 
 
     }
-    else if (komennot.Length == 2)
+    else if (komennot.Length == 2 && komennot[0].Length > 2 && komennot[1].Length > 2)
     {
         string ekaKomento = komennot[0].Substring(0, 3);
         string tokaKomento = komennot[1].Substring(0, 3);
@@ -206,13 +213,18 @@ do
             else if (tokaKomento == "NAP") { Console.WriteLine("Täällä ei ole nappia mitä painaa."); }
             else Console.WriteLine("Painat MITÄ?"); // Tutkitaan jotain ihmeellistä
         }
+
+        else Console.WriteLine("MITÄ?");
     }
-    else { } // Käyttäjä antanut enemmän kuin kaksi sanaa MITÄS NYT !
+    else { Console.WriteLine("MITÄ?"); } // Käyttäjä antanut enemmän kuin kaksi sanaa MITÄS NYT !
 
 
 
 } while (exit) ;
 
+#endregion
+
+#region Functions
 
 static void Liikkuminen(Ilmansuunnat _ilmansuunta, ref int _nykyinenPaikka, Paikka[] _paikka)
 {
@@ -273,7 +285,6 @@ static void HaePaikanEsineet(Esine[] _esine, int _nykyinenPaikka)
 }
 
 
-
 static Esine[] HaeEsine()
 {
     Esine[] nix = new Esine[ESINEIDEN_MAARA];
@@ -283,6 +294,9 @@ static Esine[] HaeEsine()
     return nix;
 }
 
+#endregion
+
+#region Enums
 public enum Esineet
 {
     AVAIN = 0,
@@ -299,6 +313,9 @@ public enum Ilmansuunnat
     ALAS = 5
 };
 
+#endregion
+
+#region Structures
 public struct Paikka
 {
     public Paikka(int n, string k, int[] i)
@@ -324,3 +341,5 @@ public struct Esine
     public string esineenKuvaus { get; set; }
     public int esineenSijainti { get; set; }    
 }
+
+#endregion
